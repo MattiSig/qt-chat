@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "server": "node src/server.js",
+    "client": "webpack-cli -d -w --config webpack.config.js",
+    "build:dist": "webpack-cli -p --config webpack.config.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-ws": "^4.0.0",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0"
+  }
+}
