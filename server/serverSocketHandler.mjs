@@ -1,13 +1,13 @@
-const {
+import {
   SOCKET_REQUEST_USERNAME,
   SOCKET_USERNAME_OK,
   SOCKET_USERNAME_DENIED,
   SOCKET_MESSAGE,
-} = require("./constants");
+} from "./constants.mjs";
 
 let users = {};
 
-function handleMessage(ws, message) {
+export function handleMessage(ws, message) {
   message = JSON.parse(message);
   switch (message.type) {
     case SOCKET_REQUEST_USERNAME:
@@ -19,9 +19,9 @@ function handleMessage(ws, message) {
   }
 }
 
-function handleClose(ws) {
+export function handleClose(ws) {
   const remainingUsers = Object.entries(users).filter(
-    ([name, socket]) => socket !== ws
+    ([_, socket]) => socket !== ws
   );
   users = Object.fromEntries(remainingUsers);
 }
@@ -54,5 +54,3 @@ function broadcast(users, message) {
 function send(ws, message) {
   ws.send(JSON.stringify(message));
 }
-
-module.exports = { handleMessage, handleClose };

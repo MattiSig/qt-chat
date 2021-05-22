@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "server": "node src/server.js",
+    "server": "node server/index.mjs",
+    "server:dev": "nodemon server/index.mjs",
     "client": "webpack serve --open",
     "build:dist": "webpack-cli -p --config webpack.config.js",
     "lint": "eslint src/**/*",
@@ -27,6 +28,7 @@
     "eslint-loader": "^4.0.2",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "nodemon": "^2.0.7",
     "prettier": "^2.3.0",
     "ts-loader": "^9.2.1",
     "typescript": "^4.2.4",
