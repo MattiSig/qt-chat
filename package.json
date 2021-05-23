@@ -1,17 +1,19 @@
 {
   "scripts": {
     "server": "node server/index.mjs",
-    "server:dev": "nodemon server/index.mjs",
-    "client": "webpack serve --open",
+    "server:dev": "nodemon server/index2.mjs",
+    "client:dev": "webpack serve --open",
     "build:dist": "webpack-cli -p --config webpack.config.js",
     "lint": "eslint src/**/*",
-    "format": "prettier --write src/**/*.{js,jsx,ts,tsx}"
+    "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "tsc": "tsc --project tsconfig.json"
   },
   "dependencies": {
     "express": "^4.17.1",
-    "express-ws": "^4.0.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "socket.io-client": "^4.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
@@ -23,13 +25,19 @@
     "@typescript-eslint/eslint-plugin": "^4.24.0",
     "@typescript-eslint/parser": "^4.24.0",
     "babel-loader": "^8.2.2",
+    "concurrently": "^6.1.0",
+    "cors": "^2.8.5",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-loader": "^4.0.2",
+    "eslint-plugin-import": "^2.23.3",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "http": "*",
     "nodemon": "^2.0.7",
     "prettier": "^2.3.0",
+    "socket.io": "^4.1.2",
     "ts-loader": "^9.2.1",
     "typescript": "^4.2.4",
     "webpack": "^5.37.1",

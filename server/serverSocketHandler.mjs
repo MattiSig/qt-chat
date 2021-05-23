@@ -1,46 +1,61 @@
-import {
+"use-strict";
+import CONSTS from "../src/constants.js";
+const {
   SOCKET_REQUEST_USERNAME,
   SOCKET_USERNAME_OK,
   SOCKET_USERNAME_DENIED,
   SOCKET_MESSAGE,
-} from "./constants.mjs";
+  SOCKET_USER_JOINED,
+} = CONSTS;
 
 let users = {};
 
-export function handleMessage(ws, message) {
+export async function handleMessage(socet, io, message) {
+  console.log(message);
   message = JSON.parse(message);
+
   switch (message.type) {
     case SOCKET_REQUEST_USERNAME:
-      requestUsername(ws, message.payload);
+      await requestUsername(socet, io, message.payload);
       break;
     case SOCKET_MESSAGE:
-      messageReceived(ws, message.payload);
+      console.log(message.payload);
+      messageReceived(socet, io, message.payload);
+      io.emit("message", JSON.stringify);
       break;
   }
 }
 
-export function handleClose(ws) {
+export function handleClose(socet) {
   const remainingUsers = Object.entries(users).filter(
-    ([_, socket]) => socket !== ws
+    ([_, socket]) => socket !== socet
   );
   users = Object.fromEntries(remainingUsers);
 }
 
-function requestUsername(ws, username) {
-  if (users[username] != null) {
-    send(ws, { type: SOCKET_USERNAME_DENIED });
+async function requestUsername(socet, io, username) {
+  const sockets = await io.fetchSockets();
+
+  const hasName = sockets.findIndex((usr) => usr.data.username === username);
+  console.log(hasName);
+  if (hasName >= 0) {
+    console.log("DENIED");
+    socet.emit({ type: SOCKET_USERNAME_DENIED });
   } else {
-    send(ws, { type: SOCKET_USERNAME_OK });
-    users[username] = ws;
-    broadcast(users, {
+    console.log("taking names");
+    socet.data.username = username;
+    socet.emit(SOCKET_USERNAME_OK);
+    io.emit({
       type: SOCKET_MESSAGE,
       payload: `${username} has joined`,
     });
   }
 }
 
-function messageReceived(ws, message) {
-  const from = Object.entries(users).find(([user, socket]) => socket === ws)[0];
+function messageReceived(socet, io, message) {
+  const from = Object.entries(users).find(
+    ([user, socket]) => socket === socet
+  )[0];
 
   broadcast(users, { type: SOCKET_MESSAGE, payload: `${from}: ${message}` });
 }
@@ -51,6 +66,6 @@ function broadcast(users, message) {
   });
 }
 
-function send(ws, message) {
-  ws.send(JSON.stringify(message));
+function send(socet, message) {
+  socet.send(JSON.stringify(message));
 }
