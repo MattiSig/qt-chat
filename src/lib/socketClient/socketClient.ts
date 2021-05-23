@@ -12,18 +12,6 @@ const {
 
 export type Message = { name: string; message: string };
 
-export type State = {
-  status: string;
-  messages: Message[];
-  error: string | null;
-};
-
-export const initialState: State = {
-  status: "connecting...",
-  messages: [],
-  error: null,
-};
-
 export class SocketClient extends Subject<Actions> {
   private socket;
   error = "";
@@ -49,25 +37,27 @@ export class SocketClient extends Subject<Actions> {
     });
 
     this.socket.on(SOCKET_MESSAGE, (msg) => {
-      const message = JSON.parse(msg) as Message;
+      const message = msg as Actions;
       this.recieveMessage(message);
     });
   }
 
-  recieveMessage = (msg: Message): void => {
-    this.notify({ type: SOCKET_MESSAGE, payload: msg });
+  recieveMessage = (msg: Actions): void => {
+    this.notify(msg);
   };
 
-  sendMessage(message: string): void {
+  sendMessage = (message: string): void => {
     const jsonMessage = JSON.stringify({
       type: SOCKET_MESSAGE,
       payload: message,
     });
+
     this.socket.emit(SOCKET_MESSAGE, jsonMessage);
-  }
+  };
 
   requestUser = (userName = ""): void => {
     if (!userName) return;
+
     const jsonMessage = JSON.stringify({
       type: SOCKET_REQUEST_USERNAME,
       payload: userName,

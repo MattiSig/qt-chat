@@ -1,11 +1,23 @@
 import { Reducer } from "react";
-import { Message, State } from ".";
+import { Message } from ".";
 import {
   SOCKET_CONNECTED,
   SOCKET_USERNAME_OK,
   SOCKET_USERNAME_DENIED,
   SOCKET_MESSAGE,
 } from "../../constants";
+
+export type State = {
+  status: string;
+  messages: Message[];
+  error: string | null;
+};
+
+export const initialState: State = {
+  status: "connecting...",
+  messages: [],
+  error: null,
+};
 
 export type Actions =
   | {
@@ -34,7 +46,6 @@ export const chatReducer: Reducer<State, Actions> = (state, action) => {
         messages: [...state.messages, action.payload],
       };
     case SOCKET_CONNECTED:
-      console.log("yubb");
       return {
         ...state,
         status: "connected",

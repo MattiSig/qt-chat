@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useReducer } from "react";
-import { chatReducer, Actions } from "./reducer";
-import { initialState, SocketClient, State } from "./socketClient";
+import { chatReducer, Actions, initialState, State } from ".";
+import { SocketClient } from "./socketClient";
 import { Observer } from "../observer";
 
 const SocketContext = createContext<SocketClient | undefined>(undefined);
@@ -36,7 +36,10 @@ const useSocketClient: () => SocketClient = () => {
   return socketContext;
 };
 
-type Methods = { requestUsername: (name: string) => void };
+type Methods = {
+  requestUsername: (name: string) => void;
+  sendMessage: (message: string) => void;
+};
 
 export const useSocketConnection = (): Methods & { state: State } => {
   const socketClient = useSocketClient();
@@ -55,6 +58,7 @@ export const useSocketConnection = (): Methods & { state: State } => {
 
   const methods: Methods = {
     requestUsername: socketClient.requestUser,
+    sendMessage: socketClient.sendMessage,
   };
 
   return { state, ...methods };

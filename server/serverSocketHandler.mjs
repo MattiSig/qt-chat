@@ -11,7 +11,6 @@ const {
 let users = {};
 
 export async function handleMessage(socet, io, message) {
-  console.log(message);
   message = JSON.parse(message);
 
   switch (message.type) {
@@ -21,7 +20,6 @@ export async function handleMessage(socet, io, message) {
     case SOCKET_MESSAGE:
       console.log(message.payload);
       messageReceived(socet, io, message.payload);
-      io.emit("message", JSON.stringify);
       break;
   }
 }
@@ -37,35 +35,23 @@ async function requestUsername(socet, io, username) {
   const sockets = await io.fetchSockets();
 
   const hasName = sockets.findIndex((usr) => usr.data.username === username);
-  console.log(hasName);
   if (hasName >= 0) {
-    console.log("DENIED");
     socet.emit({ type: SOCKET_USERNAME_DENIED });
   } else {
-    console.log("taking names");
     socet.data.username = username;
     socet.emit(SOCKET_USERNAME_OK);
     io.emit({
-      type: SOCKET_MESSAGE,
+      type: SOCKET_USER_JOINED,
       payload: `${username} has joined`,
     });
   }
 }
 
 function messageReceived(socet, io, message) {
-  const from = Object.entries(users).find(
-    ([user, socket]) => socket === socet
-  )[0];
+  const username = socet.data.username;
 
-  broadcast(users, { type: SOCKET_MESSAGE, payload: `${from}: ${message}` });
-}
-
-function broadcast(users, message) {
-  Object.entries(users).forEach(([_, socket]) => {
-    send(socket, message);
+  io.emit(SOCKET_MESSAGE, {
+    type: SOCKET_MESSAGE,
+    payload: { name: username, message },
   });
-}
-
-function send(socet, message) {
-  socet.send(JSON.stringify(message));
 }
