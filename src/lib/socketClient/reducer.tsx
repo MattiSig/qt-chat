@@ -5,7 +5,7 @@ import {
   SOCKET_USERNAME_OK,
   SOCKET_USERNAME_DENIED,
   SOCKET_MESSAGE,
-} from "../../constants";
+} from "../../../shared/constants";
 
 export type State = {
   status: string;

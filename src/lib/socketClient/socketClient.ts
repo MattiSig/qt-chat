@@ -1,14 +1,13 @@
 import io from "socket.io-client";
-import constants, { SOCKET_USERNAME_OK } from "../../constants";
-import { Actions } from "./reducer";
-import { Subject } from "../observer";
-
-const {
+import {
   SOCKET_MESSAGE,
   SOCKET_REQUEST_USERNAME,
   SOCKET_USERNAME_DENIED,
   SOCKET_CONNECTED,
-} = constants;
+  SOCKET_USERNAME_OK,
+} from "../../../shared/constants";
+import { Actions } from "./reducer";
+import { Subject } from "../observer";
 
 export type Message = { name: string; message: string };
 

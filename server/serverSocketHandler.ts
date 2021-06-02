@@ -1,11 +1,10 @@
-import CONSTS from "../src/constants.js";
-const {
+import {
   SOCKET_REQUEST_USERNAME,
   SOCKET_USERNAME_OK,
   SOCKET_USERNAME_DENIED,
   SOCKET_MESSAGE,
   SOCKET_USER_JOINED,
-} = CONSTS;
+} from "../shared/constants";
 
 let users = {};
 

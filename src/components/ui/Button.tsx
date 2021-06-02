@@ -3,9 +3,11 @@ import { AriaButtonProps } from "@react-types/button";
 import { useRef } from "react";
 
 export const Button: React.FC<AriaButtonProps> = (props) => {
-  let ref = useRef(null);
-  let { buttonProps } = useButton(props, ref);
-  let { children } = props;
+  const ref = useRef(null);
+  const { buttonProps } = useButton(props, ref) as {
+    buttonProps: AriaButtonProps;
+  };
+  const { children } = props;
 
   return (
     <button {...buttonProps} ref={ref}>
