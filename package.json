@@ -1,13 +1,15 @@
 {
   "scripts": {
     "server": "node server/index.mjs",
-    "server:dev": "nodemon server/index2.mjs",
     "client:dev": "webpack serve --open",
     "build:dist": "webpack-cli -p --config webpack.config.js",
     "lint": "eslint src/**/*",
     "format": "prettier --write src/**/*.{js,jsx,ts,tsx}",
     "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
-    "tsc": "tsc --project tsconfig.json"
+    "tsc": "tsc --project tsconfig.json",
+    "server:tsc": "tsc --watch --project ./server/tsconfig.json",
+    "server:node": "nodemon server/server.js",
+    "server:dev": "concurrently \"npm run server:tsc\" \"npm run server:node\""
   },
   "dependencies": {
     "express": "^4.17.1",
