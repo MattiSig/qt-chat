@@ -1,6 +1,6 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { handleClose, handleMessage } from "./serverSocketHandler.mjs";
+import { handleClose, handleMessage } from "./serverSocketHandler";
 import CONSTS from "../src/constants.js";
 
 const { SOCKET_REQUEST_USERNAME, SOCKET_MESSAGE } = CONSTS;
@@ -17,9 +17,6 @@ io.on("connection", (socket) => {
   console.log("Connection established");
   socket.on(SOCKET_MESSAGE, (message) => handleMessage(socket, io, message));
 
-  socket.on(SOCKET_REQUEST_USERNAME, (message) =>
-    handleUsernameRequest(socket, io, message)
-  );
   socket.on("disconnect", () => handleClose(socket));
 });
 

@@ -1,4 +1,3 @@
-"use-strict";
 import CONSTS from "../src/constants.js";
 const {
   SOCKET_REQUEST_USERNAME,
@@ -39,7 +38,7 @@ async function requestUsername(socet, io, username) {
     socet.emit({ type: SOCKET_USERNAME_DENIED });
   } else {
     socet.data.username = username;
-    socet.emit(SOCKET_USERNAME_OK);
+    socet.emit(SOCKET_USERNAME_OK, username);
     io.emit({
       type: SOCKET_USER_JOINED,
       payload: `${username} has joined`,
