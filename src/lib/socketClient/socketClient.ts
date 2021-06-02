@@ -32,8 +32,8 @@ export class SocketClient extends Subject<Actions> {
       this.notify({ type: SOCKET_USERNAME_DENIED });
     });
 
-    this.socket.on(SOCKET_USERNAME_OK, () => {
-      this.notify({ type: SOCKET_USERNAME_OK });
+    this.socket.on(SOCKET_USERNAME_OK, (username: string) => {
+      this.notify({ type: SOCKET_USERNAME_OK, payload: username });
     });
 
     this.socket.on(SOCKET_MESSAGE, (msg) => {

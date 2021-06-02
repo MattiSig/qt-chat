@@ -1,10 +1,11 @@
 import { FormEventHandler, useRef, useState } from "react";
 import { useSocketConnection } from "../lib/socketClient/SocketClientProvider";
+import { Messages } from ".";
+import { TextField } from "./ui/TextField";
 export type ChatProps = null;
 
 const Chat: React.FC = () => {
   const { state, sendMessage } = useSocketConnection();
-  const messageArray = state.messages ? state.messages : [];
 
   const [showChat, setShowChat] = useState(false);
   const inputEl = useRef<HTMLInputElement>(null);
@@ -28,15 +29,10 @@ const Chat: React.FC = () => {
 
   return (
     <>
-      <h1>This is the chat!</h1>
-      {messageArray.map((msg) => (
-        <p key={msg.message}>
-          <b>{`${msg.name}`}</b>: {msg.message}
-        </p>
-      ))}
+      <h1>Welcome to the chat! {state.username}</h1>
+      <Messages messages={state.messages} />
       <form onSubmit={submitMessage}>
-        <label htmlFor="message">Message: </label>
-        <input type="text" id="message" name="message" ref={inputEl} required />
+        <TextField type="text" id="message" name="message" label="Message: " />
         <button type="submit">Send!</button>
       </form>
     </>
